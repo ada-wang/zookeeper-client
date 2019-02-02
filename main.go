@@ -51,23 +51,17 @@ func main() {
 		panic(err)
 	}
 
-	detailFile, err := os.OpenFile("detail.log", os.O_APPEND, 0644)
+	detailFile, err := os.OpenFile("detail.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		logger.Warning(err)
-		detailFile, err = os.Create("detail.log")
-		if err != nil {
-			logger.Error(err)
-		}
+		logger.Error(err)
+		os.Exit(1)
 	}
 	defer detailFile.Close()
 
-	zookeeperWatcherFile, err := os.OpenFile("zookeeperWatcher.log", os.O_APPEND, 0644)
+	zookeeperWatcherFile, err := os.OpenFile("zookeeperWatcher.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		logger.Warning(err)
-		zookeeperWatcherFile, err = os.Create("zookeeperWatcher.log")
-		if err != nil {
-			logger.Error(err)
-		}
+		logger.Error(err)
+		os.Exit(1)
 	}
 	defer zookeeperWatcherFile.Close()
 
