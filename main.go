@@ -71,7 +71,14 @@ func main() {
 			panic(err)
 		}
 		fmt.Printf("%+v %+v\n", children, stat)
-		zookeeperWatcherFile.WriteString(strings.Join(children, " ") + "\n")
+		if len(children) >= 4 {
+			zookeeperWatcherFile.WriteString("INFO " + strings.Join(children, " ") + "\n")
+		} else if len(children) == 3 {
+			zookeeperWatcherFile.WriteString("WARNING " + strings.Join(children, " ") + "\n")
+		} else {
+			zookeeperWatcherFile.WriteString("ERROR " + strings.Join(children, " ") + "\n")
+		}
+		
 		zookeeperWatcherFile.Sync()
 		detailFile.WriteString(time.Now().String() + " kafka brokers: " + strings.Join(children, " ") + "\n")
 		detailFile.Sync()
